@@ -1,20 +1,53 @@
-﻿<h3>Game</h3>
+﻿@using BlackQueen.Entities;
+@using BlackQueen.Business;
+
+<h3>Game</h3>
 
 <div class="container">
     <p>
         <label>
             Enter No of players:
-            <input type="text" />
+            <input type="text" @bind="noOfPlayers" />
+
         </label>
         <button @onclick="btnSubmit_onclick" class="btn btn-primary">
             Submit
         </button>
     </p>
+    <p>
+        <div>
+            <label>No of players:</label><label>@noOfPlayers</label>
+        </div>
+        <div>
+            <label>Cards per player:</label><label>@cardsPerPlayer</label>
+            <label>Remainder:</label><label>@remainder</label>
+        </div>
+    </p>
+    <ul>
+        @for (int x = 0; x < cards.Count; x++)
+        {
+            <li>
+                <label>@cards.ElementAt(x).cardId :</label>
+                <label>@cards.ElementAt(x).cardName</label>
+
+            </li>
+        }
+    </ul>
 </div>
 
 
-@code {
-     private void btnSubmit_onclick()
+@code 
+{
+    private int noOfPlayers=0;
+    private int cardsPerPlayer = 0;
+    private int remainder = 0;
+    List<Card> cards = new List<Card>();
+
+    private void btnSubmit_onclick()
     {
+        int max = 52;
+        cardsPerPlayer = max / noOfPlayers;
+        remainder = max % noOfPlayers;
+        cards = ShuffleCards.Shuffle();
     }
 }
